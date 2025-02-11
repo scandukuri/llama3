@@ -1,13 +1,17 @@
-import torch
+### CONSTANTS ###
+### PULLED FROM LLAMA3 TECHNICAL REPORT ###
+MODEL_DIM = 4096
+FEED_FORWARD_DIMENSION = 14336
+N_TRANSFORMER_BLOCKS = 32
+N_ATTENTION_HEADS = 32
+RMS_NORM_EPS = 1e-05
+ROPE_EMBEDDING_THETA = 500000
+HEAD_DIM = MODEL_DIM // N_ATTENTION_HEADS
 
-def compute_frequencies(
-    dimension: int,
-    freq_constant: int
-):
-    if dimension % 2 != 0:
-        print("Embedding dimension must be even for a clean RoPE setup. Sorry! 🦙")
-        return None
-    half_dim = dimension // 2
-    power = -2 * torch.arange(0, half_dim) / dimension
-    frequencies = freq_constant ** power
-    return frequencies # should be the frequenceies as a torch.Tensor with shape (dimension // 2,)
+### LIMITS FOR WORKING ON CPU ###
+MAX_BATCH_SIZE = 4
+MAX_SEQ_LEN = 128
+
+### FOR GQA ###
+N_KV_HEADS = 8
+N_KV_HEAD_REPEAT = N_ATTENTION_HEADS // N_KV_HEADS
